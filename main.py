@@ -32,11 +32,11 @@ PLAYER_2 = 1
 player = PLAYER_1
 
 def play_turn(current_player):
-    curr_coordinate = pygame.math.Vector2(pygame.mouse.get_pos()) // WINDOW_WIDTH
-    normalized_coordinate = curr_coordinate // PIXEL_WIDTH
+    curr_coordinate = pygame.math.Vector2(pygame.mouse.get_pos()) // PIXEL_WIDTH
+    #normalized_coordinate = curr_coordinate // PIXEL_WIDTH
     if pygame.mouse.get_pressed()[0]:
-        col, row = map(int, normalized_coordinate)
-        board[row][col] = current_player
+        col, row = map(int, curr_coordinate)
+        board[row][col] = 0 if current_player == 0 else 1
         global player
         player = 1 - player
 
