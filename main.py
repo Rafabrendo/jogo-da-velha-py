@@ -41,7 +41,7 @@ def play_turn(current_player):
     #normalized_coordinate = curr_coordinate // PIXEL_WIDTH
     if pygame.mouse.get_pressed()[0]:
         col, row = map(int, curr_coordinate)
-        board[row][col] = 0 if current_player == 0 else 1
+        board[row][col] = 0 if current_player == 0 else 1 #Aqui eu vou guardar qual é o player "element"
         global player
         player = 1 - player
 
@@ -84,10 +84,13 @@ def is_winner(game_player):
 
 
 def check_victory():
-    if is_winner(board, PLAYER_1):
-        return PLAYER_1
-    if is_winner(board, PLAYER_2):
-        return PLAYER_2
+    global winner_text
+    if is_winner(PLAYER_1):
+        winner_text = font.render('Player 1 Ganhou!', True, 'green')
+        return True
+    if is_winner(PLAYER_2):
+        winner_text = font.render('Player 2 Ganhou!', True, 'green')
+        return True
 
 
 while running:
@@ -110,7 +113,8 @@ while running:
     pygame.event.wait()
     play_turn(player)
     draw_icons()
-    if check_victory()
+    if check_victory():
+        screen.blit(winner_text, textRect)
 
     clock.tick(60)
 
