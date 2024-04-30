@@ -9,6 +9,11 @@ PIXEL_WIDTH = WINDOW_WIDTH // 3
 screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_WIDTH))
 clock = pygame.time.Clock()
 
+font = pygame.font.Font('freesansbold.ttf', 32)
+winner_text = font.render('', True, 'green')
+textRect = winner_text.get_rect()
+textRect.center = (WINDOW_WIDTH // 2 - PIXEL_WIDTH // 2, WINDOW_WIDTH // 2)
+
 running = True
 
 
@@ -48,6 +53,43 @@ def draw_icons():
             if board[i][j] == 1:
                 screen.blit(ICON_X, (j * PIXEL_WIDTH, i * PIXEL_WIDTH))
 
+
+def has_equal_icons(elements, game_player):
+    for element in elements:
+        if element != game_player:
+            return False
+    return True
+
+
+def has_winning_row(game_player):
+    return has_equal_icons(board[0], game_player) \
+        or has_equal_icons(board[1], game_player) \
+        or has_equal_icons(board[2], game_player)
+
+def has_winning_col(game_player):
+    return has_equal_icons([board[0][0], board[1][0], board[2][0]], game_player) \
+        or has_equal_icons([board[0][1], board[1][1], board[2][1]], game_player) \
+        or has_equal_icons([board[0][2], board[1][2], board[2][2]], game_player)
+
+
+def has_winning_diagonal(game_player):
+    return has_equal_icons([board[0][0], board[1][1], board[2][2]], game_player) \
+        or has_equal_icons([board[0][2], board[1][1], board[2][0]], game_player)
+
+
+def is_winner(game_player):
+    return has_winning_row(game_player) \
+        or has_winning_col(game_player) \
+        or has_winning_diagonal(game_player)
+
+
+def check_victory():
+    if is_winner(board, PLAYER_1):
+        return PLAYER_1
+    if is_winner(board, PLAYER_2):
+        return PLAYER_2
+
+
 while running:
     # poll for events
     # pygame.QUIT event means the user clicked X to close your window
@@ -68,6 +110,7 @@ while running:
     pygame.event.wait()
     play_turn(player)
     draw_icons()
+    if check_victory()
 
     clock.tick(60)
 
