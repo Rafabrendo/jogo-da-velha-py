@@ -3,9 +3,11 @@ import pygame
 #pygame setup
 pygame.init()
 WINDOW_WIDTH = 720
+PIXEL_WIDTH = WINDOW_WIDTH // 3
 screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_WIDTH))
 clock = pygame.time.Clock()
 running = True
+pygame.display.set_caption("Jogo da Velha")
 
 def load_icon(path, resolution):
     icon = pygame.image.load(path)
@@ -17,9 +19,18 @@ board = [
     [None, None, None]
 ]
 
-ICON_X = load_icon('icons/x-icon.png', [WINDOW_WIDTH // 3, WINDOW_WIDTH // 3])
-ICON_O = load_icon('icons/o-icon.png', [WINDOW_WIDTH // 3, WINDOW_WIDTH // 3])
+ICON_X = load_icon('icons/x-icon.png', [PIXEL_WIDTH, PIXEL_WIDTH])
+ICON_O = load_icon('icons/o-icon.png', [PIXEL_WIDTH, PIXEL_WIDTH])
 GRID = load_icon('icons/grid.png', [WINDOW_WIDTH, WINDOW_WIDTH])
+player = 0
+
+def play_turn(current_player):
+    curr_coordinate = pygame.math.Vector2(pygame.mouse.get_pos()) // WINDOW_WIDTH
+    if pygame.mouse.get_pressed()[0]:
+        col, row  = map(int, curr_coordinate)
+        board[row][col] = 0 if current_player == 0 else 1
+        global player
+        player = 1 - player
 
 while running:
     # poll for events
